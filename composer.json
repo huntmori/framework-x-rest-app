@@ -1,0 +1,41 @@
+{
+    "require": {
+        "php": ">=8.3",
+        "clue/framework-x": "0.16",
+        "react/mysql": "^0.6.0",
+        "vlucas/phpdotenv": "^5.6",
+        "cboden/ratchet": "^0.4.4",
+        "voryx/thruway": "*",
+        "clue/docker-react": "1.5",
+        "thruway/pawl-transport": "^0.5.2",
+        "league/container": "^4.2",
+        "symfony/console": "^6.4.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/",
+            "App\\": "App/"
+        }
+    },
+    "require-dev": {
+        "clue/phar-composer": "^1.4"
+    },
+    "bin": [
+        "main.php",
+        "envs"
+    ],
+    "scripts": {
+        "build" : "php -d phar.readonly=off ./vendor/clue/phar-composer/bin/phar-composer build . ",
+        "build2" : "php -d phar.readonly=off ./build.php "
+    },
+    "extra": {
+        "phar-composer": {
+            "directories": [
+                "env/local"
+            ],
+            "files": [
+                "env/local/.env"
+            ]
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+  "directories": [
+    "src",
+    "vendor",
+    "App",
+    "envs",
+    "public",
+    "src"
+  ],
+  "files": [
+    "main.php",
+    "envs/local/.env"
+  ]
+}

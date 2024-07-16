@@ -3,17 +3,18 @@
 namespace Src\common;
 
 use React\MySQL\ConnectionInterface;
+use React\MySQL\Io\LazyConnection;
 
 class BaseRepository
 {
-    private ConnectionInterface $connection;
+    private LazyConnection $connection;
 
-    public function __construct(ConnectionInterface $connection)
+    public function __construct(LazyConnection $connection)
     {
         $this->connection = $connection;
     }
 
-    private function getConnection(): ConnectionInterface
+    private function getConnection(): LazyConnection
     {
         return $this->conneciton;
     }

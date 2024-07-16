@@ -1,0 +1,36 @@
+<?php
+
+namespace Src\common;
+
+use FrameworkX\App;
+use Psr\Http\Message\ServerRequestInterface;
+use React\Http\Message\Response as Response;
+
+class TestController
+{
+    private TestRepository $testRepository;
+    private App $app;
+    public $home;
+
+    public function __construct(TestRepository $testRepository)
+    {
+        $this->testRepository = $testRepository;
+//        $this->home = new class() {
+//            public function __invoke(ServerRequestInterface $request): Response
+//            {
+//                return Response::plaintext(
+//                    "Hello " . $request->getAttribute('name') . "!\n"
+//                );
+//            }
+//        };
+    }
+
+    public static function home(ServerRequestInterface $request): Response
+    {
+        return Response::plaintext(
+            "Hello " . $request->getAttribute('name') . "!\n"
+        );
+    }
+
+
+}

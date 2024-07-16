@@ -1,5 +1,4 @@
 !env/sample
-env/*
 vendor
 env/local/*
 .idea/

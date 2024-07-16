@@ -26,7 +26,7 @@ $db = (new React\MySQL\Factory())->createLazyConnection($credentials);
 $container->add(ConnectionInterface::class, $db);
 //$container->add('connection', $db);
 
-$userRepository = $container->get(\Src\User\UserRepository::class);
+$userRepository = $container->get(\Src\User\Repository\UserRepository::class);
 
 var_dump(gettype($userRepository));
 

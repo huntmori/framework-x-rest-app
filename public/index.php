@@ -13,8 +13,6 @@ $profile = "local";
 $dotEnv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../envs/{$profile}");
 $dotEnv->load();
 
-
-
 putenv("X_LISTEN=127.0.0.1:9090");
 
 $user = $_ENV['DB_USER'];

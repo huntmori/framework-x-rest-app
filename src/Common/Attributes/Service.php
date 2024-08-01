@@ -1,6 +1,7 @@
 <?php
 
-namespace Src\common\Attributes;
+namespace Src\Common\Attributes;
+use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class Service
@@ -10,8 +11,7 @@ class Service
         public string $interface,
         public string $implement
     )
-    {
-    }
+    {}
 
     public function test(){}
 }

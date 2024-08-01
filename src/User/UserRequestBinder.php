@@ -3,6 +3,7 @@
 namespace Src\User;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Src\User\Dto\UserDto;
 
 class UserRequestBinder
 {

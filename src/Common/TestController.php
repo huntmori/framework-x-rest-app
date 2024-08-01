@@ -1,13 +1,13 @@
 <?php
 
-namespace Src\common;
+namespace Src\Common;
 
 use FrameworkX\App;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Message\Response as Response;
-use Src\common\Attributes\Controller;
+use Src\Common\Attributes\Controller;
 
-#[Controller(TestController::class, TestController::class)]
+//#[Controller(TestController::class, TestController::class)]
 class TestController
 {
     private TestRepository $testRepository;

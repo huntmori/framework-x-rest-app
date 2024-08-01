@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\common;
+namespace Src\Common;
 
 use React\MySQL\ConnectionInterface;
 use React\MySQL\Io\LazyConnection;

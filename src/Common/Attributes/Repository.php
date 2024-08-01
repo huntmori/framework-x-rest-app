@@ -1,8 +1,9 @@
 <?php
 
-namespace Src\common\Attributes;
+namespace Src\Common\Attributes;
+use Attribute;
 
-#[\Attribute] #[Attribute(Attribute::TARGET_CLASS)]
+#[Attribute(Attribute::TARGET_CLASS)]
 class Repository
 {
     public function __construct(

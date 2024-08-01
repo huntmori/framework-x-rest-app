@@ -1,9 +1,9 @@
 <?php
 require __DIR__. "/../vendor/autoload.php";
 
-use Src\common\Attributes\Controller;
-use Src\common\Attributes\Service;
-use Src\common\Attributes\Repository;
+use Src\Common\Attributes\Controller;
+use Src\Common\Attributes\Service;
+use Src\Common\Attributes\Repository;
 
 // 특정 디렉토리 경로
 $directory = __DIR__ . "/../src";

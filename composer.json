@@ -1,12 +1,13 @@
 {
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.3.9",
         "clue/framework-x": "^0.16.0",
         "react/mysql": "^0.6.0",
         "league/container": "^4.2",
         "symfony/console": "*",
         "symfony/dotenv": "*",
-        "league/flysystem": "3.0"
+        "league/flysystem": "3.0",
+        "monolog/monolog": "^3.7"
     },
     "autoload": {
         "psr-4": {

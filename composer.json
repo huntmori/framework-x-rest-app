@@ -1,41 +1,11 @@
 {
-    "require": {
-        "php": ">=8.3.9",
-        "clue/framework-x": "^0.16.0",
-        "react/mysql": "^0.6.0",
-        "league/container": "^4.2",
-        "symfony/console": "*",
-        "symfony/dotenv": "*",
-        "league/flysystem": "3.0",
-        "monolog/monolog": "^3.7"
-    },
+    "name": "damoyo/api",
     "autoload": {
         "psr-4": {
-            "Src\\": "src/",
-            "App\\": "App/"
+            "Damoyo\\Api\\": "src/"
         }
     },
-    "bin": [
-        "main.php",
-        "envs"
-    ],
-    "scripts": {
-        "build" : "php -d phar.readonly=off ./vendor/clue/phar-composer/bin/phar-composer build . ",
-        "build2" : "php -d phar.readonly=off ./build.php "
-    },
-    "extra": {
-        "phar-composer": {
-            "directories": [
-                "env/local"
-            ],
-            "files": [
-                "env/local/.env"
-            ]
-        }
-    },
-    "config": {
-        "allow-plugins": {
-            "wyrihaximus/composer-update-bin-autoload-path": true
-        }
+    "require": {
+        "clue/framework-x": "^0.16"
     }
 }

@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
-use Damoyo\Api\Common\Routing\Router;
+use Damoyo\Api\Common\Routing\AttributeRouter;
 use Damoyo\Api\Domain\User\Controller\UserController;
 use Damoyo\Api\Domain\User\Service\UserService;
 use Damoyo\Api\Domain\User\Service\UserServiceImpl;
@@ -15,23 +15,8 @@ $container = new DI\Container([
 
 $app = new FrameworkX\App(new FrameworkX\Container(($container)));
 
-// User routes
-$app->get('/user', function (ServerRequestInterface $request) use ($container) {
-    try {
-    $data = $container->get(UserController::class)->listUsers($request);
-    } catch(Exception $e) {
-        $data = ResponseDto::init()
-            ->code(500)
-            ->result(false)
-            ->message('사용자 목록 조회 실패')
-            ->data([]);
-    }
-    
-    return ResponseDto::toResponse($data);
-});
-
-$app->post('/user/create', function (ServerRequestInterface $request) use ($container) {
-    return $container->get(UserController::class)->createUser($request);
-});
+// Register all controllers using AttributeRouter
+$router = new AttributeRouter($app, $container);
+$router->registerControllersFromDirectory(__DIR__ . '/../src/Domain');
 
 $app->run();

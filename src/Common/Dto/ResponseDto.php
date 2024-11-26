@@ -33,4 +33,33 @@ class ResponseDto implements JsonSerializable {
     {
         return \React\Http\Message\Response::json($data);
     }
+
+    public static function init() : ResponseDto
+    {
+        return new self();
+    }
+
+    public function result(bool $result) 
+    {
+        $this->result = $result;
+        return $this;
+    }
+
+    public function code(int $code) 
+    {
+        $this->code = $code;
+        return $this;
+    }
+
+    public function message(string $message)
+    {
+        $this->message = $message;
+        return $this;
+    }
+
+    public function data(mixed $data)
+    {
+        $this->data = $data;
+        return $this;
+    }
 }

@@ -1,7 +1,6 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-use Damoyo\Api\Common\Dto\ResponseDto;
 use Damoyo\Api\Common\Routing\Router;
 use Damoyo\Api\Domain\User\Controller\UserController;
 use Damoyo\Api\Domain\User\Service\UserService;
@@ -18,7 +17,15 @@ $app = new FrameworkX\App(new FrameworkX\Container(($container)));
 
 // User routes
 $app->get('/user', function (ServerRequestInterface $request) use ($container) {
+    try {
     $data = $container->get(UserController::class)->listUsers($request);
+    } catch(Exception $e) {
+        $data = ResponseDto::init()
+            ->code(500)
+            ->result(false)
+            ->message('사용자 목록 조회 실패')
+            ->data([]);
+    }
     
     return ResponseDto::toResponse($data);
 });

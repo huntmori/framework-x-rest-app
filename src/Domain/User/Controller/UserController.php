@@ -19,13 +19,13 @@ class UserController
     }
 
     #[Route('/user', method: HttpMethod::GET)]
-    public function listUsers(ServerRequestInterface $request): ResponseDto {
-        $response = new ResponseDto();
-        $response->code = 200;
-        $response->result = true;
-        $response->message = '사용자 목록 조회 성공';
-        $response->data = $this->userService->listUsers();
-        return $response;
+    public function listUsers(ServerRequestInterface $request): ResponseDto 
+    {    
+        return ResponseDto::init()
+            ->code(200)
+            ->result(true)
+            ->message('사용자 목록 조회 성공')
+            ->data($this->userService->listUsers());
     }
 
     #[Route('/user/create', method: HttpMethod::POST)]

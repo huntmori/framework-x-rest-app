@@ -6,6 +6,8 @@
         }
     },
     "require": {
-        "clue/framework-x": "^0.16"
+        "clue/framework-x": "^0.16",
+        "react/mysql": "^0.7@dev",
+        "php-di/php-di": "^7.0"
     }
 }

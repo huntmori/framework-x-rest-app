@@ -2,14 +2,20 @@
 
 namespace Damoyo\Api\Domain\User\Service;
 
+use Damoyo\Api\Domain\User\Repository\UserRepository;
+
 class UserServiceImpl implements UserService
 {
+    private UserRepository $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function listUsers(): array
     {
-        return [
-            ['id' => 1, 'name' => '홍길동'],
-            ['id' => 2, 'name' => '김철수']
-        ];
+        return $this->userRepository->find();
     }
 
     public function createUser(array $userData): array

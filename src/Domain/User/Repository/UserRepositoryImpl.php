@@ -45,9 +45,6 @@ class UserRepositoryImpl implements UserRepository
         }
 
         $data = [];
-        echo "affectedRows->affectedRows : " .$result->affectedRows.PHP_EOL;
-        var_dump($result->resultRows);
-
         for($i=0; $i<count($result->resultRows); $i++) {
             $data[] = User::fromMysqlResultRow($result->resultRows[$i]);
         }

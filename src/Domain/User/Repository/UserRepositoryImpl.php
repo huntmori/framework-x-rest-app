@@ -24,9 +24,7 @@ class UserRepositoryImpl implements UserRepository
 
     public function find(): array
     {
-        /** @var \React\Mysql\MysqlResult */
-        $result = await($this->db->getClient()
-            ->query(<<<SQL
+        $sql = <<<SQL
                 SELECT  seq,
                         uid,
                         id,
@@ -35,7 +33,11 @@ class UserRepositoryImpl implements UserRepository
                         created_at,
                         updated_at
                 FROM    user
-            SQL, [])
+            SQL;
+
+        /** @var \React\Mysql\MysqlResult */
+        $result = await($this->db->getClient()
+            ->query($sql, [])
         );
 
         if (empty($result)) {
@@ -43,7 +45,10 @@ class UserRepositoryImpl implements UserRepository
         }
 
         $data = [];
-        for($i=0; $i<$result->affectedRows; $i++) {
+        echo "affectedRows->affectedRows : " .$result->affectedRows.PHP_EOL;
+        var_dump($result->resultRows);
+
+        for($i=0; $i<count($result->resultRows); $i++) {
             $data[] = User::fromMysqlResultRow($result->resultRows[$i]);
         }
 

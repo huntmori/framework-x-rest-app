@@ -2,9 +2,10 @@
 
 namespace Damoyo\Api\Domain\User\Mapper;
 
-use Damoyo\Api\Domain\User\Dto\UserCreateRequest;
+use Damoyo\Api\Domain\User\Dto\UserCreate\UserCreateRequest;
 use Damoyo\Api\Domain\User\Entity\User;
 use DateTime;
+use DateTimeZone;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use InvalidArgumentException;
@@ -38,14 +39,15 @@ class UserMapper
 
     public function dbRowToUser(array $data) : ?User
     {
+        $timezone = new DateTimeZone('Asia/Seoul');
         return User::init()
             ->setSeq($data['seq'])
             ->setId($data['id'])
             ->setUid($data['uid'])
             ->setEmail($data['email'])
             ->setPassword($data['password'])
-            ->setCreatedAt(new DateTime($data['created_at']))
-            ->setUpdatedAt(new DateTime($data['updated_at']))
+            ->setCreatedAt(new DateTime($data['created_at'], $timezone))
+            ->setUpdatedAt(new DateTime($data['updated_at'], $timezone))
             ->build();
     }
 

@@ -2,7 +2,7 @@
 
 namespace Damoyo\Api\Domain\User\Service;
 
-use Damoyo\Api\Domain\User\Dto\UserCreateRequest;
+use Damoyo\Api\Domain\User\Dto\UserCreate\UserCreateRequest;
 use Damoyo\Api\Domain\User\Entity\User;
 
 interface UserService

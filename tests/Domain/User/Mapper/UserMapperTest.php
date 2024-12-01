@@ -3,7 +3,7 @@ namespace Tests\Domain\User\Mapper;
 
 require_once '/workspace/framework-x-rest-app/vendor/autoload.php';
 
-use Damoyo\Api\Domain\User\Dto\UserCreateRequest;
+use Damoyo\Api\Domain\User\Dto\UserCreate\UserCreateRequest;
 use Damoyo\Api\Domain\User\Mapper\UserMapper;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;

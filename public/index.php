@@ -1,6 +1,9 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
+// Set timezone
+date_default_timezone_set('Asia/Seoul');
+
 use Damoyo\Api\Common\Routing\AttributeRouter;
 use Damoyo\Api\Domain\User\Controller\UserController;
 use Damoyo\Api\Domain\User\Mapper\UserMapper;

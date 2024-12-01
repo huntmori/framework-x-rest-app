@@ -1,5 +1,5 @@
 <?php
-namespace Damoyo\Api\Domain\User\Dto;
+namespace Damoyo\Api\Domain\User\Dto\UserCreate;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

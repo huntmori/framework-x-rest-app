@@ -40,6 +40,6 @@ class UserServiceImpl implements UserService
 
     public function getUserByUid(string $uid): ?User
     {
-        
+        return $this->userRepository->findByUid((string)$uid);
     }
 }

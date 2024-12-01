@@ -87,8 +87,28 @@ class UserRepositoryImpl implements UserRepository
             
     }
 
-    public function save(User $user): ?User
+    public function save(User $user): int
     {
-        return null;
+        $sql = <<<SQL
+           INSERT INTO user
+           SET  id = ?,
+                uid = UPPER(UUID()),
+                email = ?,
+                password = ?,
+                created_at = NOW(),
+                updated_at = NOW() 
+        SQL;
+
+        $client = $this->db->getClient();
+        $result = await($client->query(
+            $sql, 
+            [
+                $user->id, 
+                $user->email, 
+                $user->password
+            ]
+        ));
+
+        return $result->insertId ?? -1 ;
     }
 }

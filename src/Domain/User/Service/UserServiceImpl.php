@@ -2,7 +2,9 @@
 
 namespace Damoyo\Api\Domain\User\Service;
 
+use Damoyo\Api\Domain\User\Dto\UserCreateRequest;
 use Damoyo\Api\Domain\User\Repository\UserRepository;
+use Damoyo\Api\Domain\User\Entity\User;
 
 class UserServiceImpl implements UserService
 {
@@ -18,9 +20,21 @@ class UserServiceImpl implements UserService
         return $this->userRepository->find();
     }
 
-    public function createUser(array $userData): array
+    public function createUser(UserCreateRequest $userData): int
     {
         // 실제 구현에서는 데이터베이스에 저장하는 로직이 들어갈 것입니다.
-        return array_merge(['id' => 3], $userData);
+        /** @var User $user */ 
+        $user = User::init()
+            ->setId($userData->id)
+            ->setEmail($userData->email)
+            ->setPassword($userData->password)
+            ->build(); 
+        return $this->userRepository->save($user);
+    }
+    /**
+     * @inheritDoc
+     */
+    public function findOneById(int $id): ?User {
+        return $this->userRepository->findOneById((string)$id);
     }
 }

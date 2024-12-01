@@ -13,7 +13,12 @@ class GlobalExceptionHandler
         // 기본 에러 응답 설정
         $statusCode = 500;
         $message = '서버 오류가 발생했습니다.';
-        var_dump($exception);
+        echo <<<LOG
+            file : {$exception->getFile()}
+            line : {$exception->getLine()}
+            message : {$exception->getMessage()}
+            =================================================
+        LOG;
 
         // 예외 타입에 따른 처리
         if ($exception instanceof ValidationException) {

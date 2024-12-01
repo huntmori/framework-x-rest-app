@@ -9,6 +9,7 @@ use Damoyo\Api\Domain\User\Repository\UserRepository;
 use Damoyo\Api\Domain\User\Repository\UserRepositoryImpl;
 use Damoyo\Api\Common\Database\DatabaseService;
 use Damoyo\Api\Common\Exception\Handler;
+use Damoyo\Api\Common\Logger\AppLogger;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,13 +17,18 @@ use Psr\Http\Message\ResponseInterface;
 use React\EventLoop\Loop;
 use React\Promise\PromiseInterface;
 use React\Http\Message\Response;
+use Psr\Log\LoggerInterface;
+
+$logger = AppLogger::getInstance();
+$logger->info('Application starting...');
 
 $container = new DI\Container([
     UserRepository::class => \DI\create(UserRepositoryImpl::class)
         ->constructor(\DI\get(DatabaseService::class)),
     UserService::class => \DI\create(UserServiceImpl::class)
         ->constructor(\DI\get(UserRepository::class)),
-    Handler::class => \DI\create(Handler::class)
+    Handler::class => \DI\create(Handler::class),
+    LoggerInterface::class => \DI\factory([AppLogger::class, 'getInstance'])
 ]);
 
 $app = new FrameworkX\App(
@@ -64,22 +70,19 @@ $router->registerControllersFromDirectory(__DIR__ . '/../src/Domain');
 
 // 메모리 사용량 추적 함수
 function trackMemoryUsage() {
+    $logger = AppLogger::getInstance();
     $memoryUsage = memory_get_usage(true);
     $memoryPeakUsage = memory_get_peak_usage(true);
     
     $memoryUsageMB = round($memoryUsage / 1024 / 1024, 2);
     $memoryPeakUsageMB = round($memoryPeakUsage / 1024 / 1024, 2);
     
-    echo sprintf(
-        "[메모리 추적] 현재: %s MB, 최대: %s MB (시간: %s)\n", 
-        $memoryUsageMB, 
-        $memoryPeakUsageMB, 
-        date('Y-m-d H:i:s')
-    );
+    $logger->info("Memory Usage: {$memoryUsageMB}MB, Peak: {$memoryPeakUsageMB}MB");
 }
 
-// ReactPHP 이벤트 루프를 사용하여 5초마다 메모리 사용량 추적
+// ReactPHP 이벤트 루프를 사용하여 60초마다 메모리 사용량 추적
 $loop = Loop::get();
 $loop->addPeriodicTimer(60.0, 'trackMemoryUsage');
 
+$logger->info('Server starting on http://127.0.0.1:8080');
 $app->run();

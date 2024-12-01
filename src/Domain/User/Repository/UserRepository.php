@@ -8,5 +8,6 @@ interface UserRepository
 {
     public function find(): array;
     public function findOneById(string $id): ?User;
-    public function save(User $user): ?User;
+    public function save(User $user): ?int;
+    
 }

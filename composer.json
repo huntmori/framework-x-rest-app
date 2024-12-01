@@ -2,13 +2,27 @@
     "name": "damoyo/api",
     "autoload": {
         "psr-4": {
-            "Damoyo\\Api\\": "src/"
+            "Damoyo\\Api\\": "src/",
+            "Tests\\": "tests/"
         }
     },
     "require": {
         "clue/framework-x": "^0.16",
         "react/mysql": "^0.7@dev",
         "php-di/php-di": "^7.0",
-        "react/event-loop": "^1.2"
+        "react/event-loop": "^1.2",
+        "symfony/validator": "^7.2",
+        "symfony/property-access": "^7.2",
+        "symfony/property-info": "^7.2",
+        "symfony/serializer": "^7.2",
+        "monolog/monolog": "^3.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     }
 }

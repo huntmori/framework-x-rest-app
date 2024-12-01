@@ -6,8 +6,7 @@ use Tests\Domain\User\Mapper\UserMapperTest;
 
 class TestRunner {
     public function run() {
-        $test = new UserMapperTest('testValidUserRequest');
-        $test->runBare();
+        
     }
 }
 

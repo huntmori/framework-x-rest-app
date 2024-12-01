@@ -22,6 +22,10 @@ class UserServiceImpl implements UserService
 
     public function createUser(UserCreateRequest $userData): int
     {
+        //TODO : check ID duplication
+        // TODO : check Email duplication
+        // TODO : password encryption
+        
         /** @var User $user */ 
         $user = User::init()
             ->setId($userData->id)

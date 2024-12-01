@@ -29,7 +29,7 @@ class UserController
         $this->exceptionHandler = $exceptionHandler;
     }
 
-    #[Route('/api/user', method: HttpMethod::GET)]
+    #[Route(method: HttpMethod::GET, path: '/api/user')]
     public function listUsers(ServerRequestInterface $request): ResponseDto 
     {    
         try {
@@ -44,17 +44,38 @@ class UserController
         }
     }
 
-    #[Route('/api/user', method: HttpMethod::POST)]
+    #[Route(method: HttpMethod::POST, path: '/api/user')]
     public function creatUser(ServerRequestInterface $request): ResponseDto
     {
         try {
-            var_dump($request);
             $userRequest = $this->mapper->toUserCreateRequest(json_decode($request->getBody()->getContents(), true));
             $user = $this->userService->createUser($userRequest);
             return ResponseDto::init()
                 ->code(201)
                 ->result(true)
                 ->message('사용자 생성 성공')
+                ->data($user);
+        } catch (Throwable $e) {
+            return $this->exceptionHandler->handle($e);
+        }
+    }
+
+    #[Route(method: HttpMethod::GET, path: '/api/user/{uid}')]
+    public function getUser(ServerRequestInterface $request): ResponseDto
+    {
+        try {
+            $uid = $request->getAttribute('uid');
+
+            $user = null;
+            if (!empty($uid)) {
+                $user = $this->userService->getUserByUid($uid);
+            }
+
+
+            return ResponseDto::init()
+                ->code(200)
+                ->result(true)
+                ->message('사용자 조회 성공')
                 ->data($user);
         } catch (Throwable $e) {
             return $this->exceptionHandler->handle($e);

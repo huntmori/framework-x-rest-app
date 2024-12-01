@@ -12,4 +12,6 @@ interface UserService
     public function createUser(UserCreateRequest $userData): int;
 
     public function findOneById(int $id): ?User;
+
+    public function getUserByUid(string $uid): ?User;
 }

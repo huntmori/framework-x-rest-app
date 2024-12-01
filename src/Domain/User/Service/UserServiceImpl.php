@@ -37,4 +37,9 @@ class UserServiceImpl implements UserService
     public function findOneById(int $id): ?User {
         return $this->userRepository->findOneById((string)$id);
     }
+
+    public function getUserByUid(string $uid): ?User
+    {
+        
+    }
 }

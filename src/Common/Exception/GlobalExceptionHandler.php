@@ -46,7 +46,7 @@ class GlobalExceptionHandler
         return ResponseDto::init()
             ->code($statusCode)
             ->result(false)
-            ->message($message)
+            ->message($exception->getMessage())
             ->data($debug);
     }
 }

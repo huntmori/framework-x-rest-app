@@ -4,22 +4,22 @@ declare(strict_types=1);
 namespace Damoyo\Api\Domain\User\Repository;
 
 use Damoyo\Api\Common\Database\DatabaseService;
+use Damoyo\Api\Domain\User\Mapper\UserMapper;
 use DateTime;
 use Damoyo\Api\Domain\User\Entity\User;
 use function React\Async\await;
 
-/**
- * UserRepositoryImpl
- *
- * @author [Your Name] <[Your Email]>
- */
 class UserRepositoryImpl implements UserRepository 
 {
     private ?DatabaseService $db = null;
+    private UserMapper $mapper;
 
-    public function __construct(DatabaseService $db)
-    {
+    public function __construct(
+        DatabaseService $db,
+        UserMapper $mapper
+    ) {
         $this->db = $db;
+        $this->mapper = $mapper;
     }
 
     public function find(): array
@@ -75,15 +75,7 @@ class UserRepositoryImpl implements UserRepository
         }
 
         $userData = $result->resultRows[0];
-        return User::init()
-            ->setSeq($userData['seq'])
-            ->setId($userData['id'])
-            ->setUid($userData['uid'])
-            ->setEmail($userData['email'])
-            ->setPassword($userData['password'])
-            ->setCreatedAt(new DateTime($userData['created_at']))
-            ->setUpdatedAt(new DateTime($userData['updated_at']))
-            ->build();
+        return $this->mapper->dbRowToUser($userData);
             
     }
 
@@ -110,5 +102,33 @@ class UserRepositoryImpl implements UserRepository
         ));
 
         return $result->insertId ?? -1 ;
+    }
+    /**
+     * @inheritDoc
+     */
+    public function findByUid(string $uid): ?User 
+    {
+        $db = $this->db->getClient();
+        $sql = <<<SQL
+            SELECT  seq,
+                    uid,
+                    id,
+                    email,
+                    password,
+                    created_at,
+                    updated_at
+            FROM    user
+            WHERE   uid = ?
+            LIMIT   1
+        SQL;
+
+        $result = await($db->query($sql, [$uid]));
+        
+        if (empty($result)) {
+            return null;
+        }
+
+        $userData = $result->resultRows[0];
+        return $this->mapper->dbRowToUser($userData);
     }
 }

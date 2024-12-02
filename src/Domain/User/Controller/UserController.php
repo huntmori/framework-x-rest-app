@@ -81,4 +81,21 @@ class UserController
             return $this->exceptionHandler->handle($e);
         }
     }
+
+    #[Route(method:HttpMethod::PATCH, path: '/api/user/{uid}')]
+    public function updateUser(ServerRequestInterface $request): ResponseDto
+    {
+        try {
+            $uid = $request->getAttribute('uid');
+            $userRequest = $this->mapper->toUserUpdateRequest(json_decode($request->getBody()->getContents(), true));
+            $user = $this->userService->updateUser($uid, $userRequest);
+            return ResponseDto::init()
+                ->code(200)
+                ->result(true)
+                ->message('사용자 정보 수정 성공')
+                ->data($user);
+        } catch (Throwable $e) {
+            return $this->exceptionHandler->handle($e);
+        }
+    }
 }

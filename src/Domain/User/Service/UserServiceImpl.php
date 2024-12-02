@@ -23,17 +23,17 @@ class UserServiceImpl implements UserService
 
     public function createUser(UserCreateRequest $userData): int
     {
-        //TODO : check ID duplication
+        //check ID duplication
         $idExsist = $this->userRepository->findOneById($userData->id);
         if ($idExsist !== null) {
             throw new Exception("ID duplication");
         }
-        // TODO : check Email duplication
+        // check Email duplication
         $emailExsist = $this->userRepository->findOneByEmail($userData->email);
         if ($emailExsist !== null) {
             throw new Exception("Email duplication");
         }
-        // TODO : password encryption
+        // password encryption
         $hashedPassword = password_hash($userData->password, PASSWORD_DEFAULT);
         
         /** @var User $user */ 

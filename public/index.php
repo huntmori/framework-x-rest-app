@@ -5,7 +5,6 @@ require __DIR__ . '/../vendor/autoload.php';
 date_default_timezone_set('Asia/Seoul');
 
 use Damoyo\Api\Common\Routing\AttributeRouter;
-use Damoyo\Api\Domain\User\Controller\UserController;
 use Damoyo\Api\Domain\User\Mapper\UserMapper;
 use Damoyo\Api\Domain\User\Service\UserService;
 use Damoyo\Api\Domain\User\Service\UserServiceImpl;
@@ -13,10 +12,10 @@ use Damoyo\Api\Domain\User\Repository\UserRepository;
 use Damoyo\Api\Domain\User\Repository\UserRepositoryImpl;
 use Damoyo\Api\Common\Database\DatabaseService;
 use Damoyo\Api\Common\Exception\GlobalExceptionHandler;
-use Damoyo\Api\Common\Http\Handler;
 use Damoyo\Api\Common\Logger\AppLogger;
 use Damoyo\Api\Common\Middleware\ErrorHandlerMiddleware;
 use React\EventLoop\Loop;
+
 
 $logger = AppLogger::getInstance();
 $logger->info('Application starting...');

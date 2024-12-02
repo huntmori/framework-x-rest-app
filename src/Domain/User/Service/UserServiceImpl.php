@@ -5,6 +5,7 @@ namespace Damoyo\Api\Domain\User\Service;
 use Damoyo\Api\Domain\User\Dto\UserCreate\UserCreateRequest;
 use Damoyo\Api\Domain\User\Repository\UserRepository;
 use Damoyo\Api\Domain\User\Entity\User;
+use Exception;
 
 class UserServiceImpl implements UserService
 {
@@ -23,14 +24,23 @@ class UserServiceImpl implements UserService
     public function createUser(UserCreateRequest $userData): int
     {
         //TODO : check ID duplication
+        $idExsist = $this->userRepository->findOneById($userData->id);
+        if ($idExsist !== null) {
+            throw new Exception("ID duplication");
+        }
         // TODO : check Email duplication
+        $emailExsist = $this->userRepository->findOneByEmail($userData->email);
+        if ($emailExsist !== null) {
+            throw new Exception("Email duplication");
+        }
         // TODO : password encryption
+        $hashedPassword = password_hash($userData->password, PASSWORD_DEFAULT);
         
         /** @var User $user */ 
         $user = User::init()
             ->setId($userData->id)
             ->setEmail($userData->email)
-            ->setPassword($userData->password)
+            ->setPassword($hashedPassword)
             ->build(); 
         return $this->userRepository->save($user);
     }

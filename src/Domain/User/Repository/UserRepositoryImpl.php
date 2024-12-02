@@ -75,6 +75,10 @@ class UserRepositoryImpl implements UserRepository
         }
 
         $userData = $result->resultRows[0];
+        if ($userData === null) {
+            return null;
+        }
+
         return $this->mapper->dbRowToUser($userData);
             
     }
@@ -129,6 +133,39 @@ class UserRepositoryImpl implements UserRepository
         }
 
         $userData = $result->resultRows[0];
+        return $this->mapper->dbRowToUser($userData);
+    }
+    /**
+     * @inheritDoc
+     */
+    public function findOneByEmail(string $email): ?User 
+    {
+        $db = $this->db->getClient();
+        $sql = <<<SQL
+            SELECT  seq,
+                    uid,
+                    id,
+                    email,
+                    password,
+                    created_at,
+                    updated_at
+            FROM    user
+            WHERE   email = ?
+            LIMIT   1
+        SQL;
+
+        $result = await($db->query($sql, [$email]));
+        
+        if (empty($result)) {
+            return null;
+        }
+
+        $userData = $result->resultRows[0];
+
+        if($userData === null) {
+            return null;
+        }
+
         return $this->mapper->dbRowToUser($userData);
     }
 }

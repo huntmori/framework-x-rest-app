@@ -6,6 +6,7 @@ use Damoyo\Api\Domain\User\Dto\UserCreate\UserCreateRequest;
 use Damoyo\Api\Domain\User\Entity\User;
 use DateTime;
 use DateTimeZone;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use InvalidArgumentException;
@@ -22,8 +23,15 @@ class UserMapper
             ->getValidator();
     }
 
-    public function toUserCreateRequest(array $data): UserCreateRequest
+    public function requestBodyToAssociativeArray(ServerRequestInterface $request) : array 
     {
+        return json_decode($request->getBody()->getContents(), true);
+    }
+
+    public function toUserCreateRequest(ServerRequestInterface $request): UserCreateRequest
+    {
+        $data = $this->requestBodyToAssociativeArray($request);
+
         $request = new UserCreateRequest();
         $request->id = $data['id'] ?? null;
         $request->email = $data['email'] ?? null;

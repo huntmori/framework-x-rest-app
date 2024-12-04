@@ -98,7 +98,14 @@ class UserRepositoryImpl implements UserRepository
                     password, 
                     created_at, 
                     updated_at
-                ) VALUES (UUID(), ?, ?, ?, NOW(), NOW())
+                ) VALUES (
+                    UPPER(UUID()), 
+                    ?, 
+                    ?, 
+                    ?, 
+                    NOW(), 
+                    NOW()
+                )
             SQL;
 
             $params = [

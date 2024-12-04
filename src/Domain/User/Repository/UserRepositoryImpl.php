@@ -74,7 +74,7 @@ class UserRepositoryImpl implements UserRepository
             return null;
         }
 
-        $userData = $result->resultRows[0];
+        $userData = $result->resultRows[0] ?? null;
         if ($userData === null) {
             return null;
         }
@@ -83,29 +83,57 @@ class UserRepositoryImpl implements UserRepository
             
     }
 
-    public function save(User $user): int
+    public function save(User $user): ?int
     {
-        $sql = <<<SQL
-           INSERT INTO user
-           SET  id = ?,
-                uid = UPPER(UUID()),
-                email = ?,
-                password = ?,
-                created_at = NOW(),
-                updated_at = NOW() 
-        SQL;
+        // 기존 사용자 확인 (uid로 조회)
+        $existingUser = $this->findOneByUid($user->uid);
 
-        $client = $this->db->getClient();
-        $result = await($client->query(
-            $sql, 
-            [
-                $user->id, 
-                $user->email, 
+        if ($existingUser === null) {
+            // INSERT 쿼리 (새로운 사용자)
+            $sql = <<<SQL
+                INSERT INTO user (
+                    uid, 
+                    id, 
+                    email, 
+                    password, 
+                    created_at, 
+                    updated_at
+                ) VALUES (?, ?, ?, ?, ?, NOW(), NOW())
+            SQL;
+
+            $params = [
+                $user->uid ?? bin2hex(random_bytes(16)),
+                $user->id,
+                $user->email,
                 $user->password
-            ]
-        ));
+            ];
+        } else {
+            // UPDATE 쿼리 (기존 사용자 업데이트)
+            $sql = <<<SQL
+                UPDATE user 
+                SET 
+                    id = ?, 
+                    email = ?, 
+                    password = ?,
+                    updated_at = NOW()
+                WHERE uid = ?
+            SQL;
 
-        return $result->insertId ?? -1 ;
+            $params = [
+                $user->id,
+                $user->email,
+                $user->password,
+                $user->uid
+            ];
+        }
+
+        /** @var \React\Mysql\MysqlResult */
+        $result = await($this->db->getClient()
+            ->query($sql, $params)
+        );
+
+        // 마지막으로 삽입된 ID 또는 영향받은 행 수 반환
+        return $existingUser === null ? $result->insertId : $result->affectedRows;
     }
     /**
      * @inheritDoc
@@ -167,5 +195,31 @@ class UserRepositoryImpl implements UserRepository
         }
 
         return $this->mapper->dbRowToUser($userData);
+    }
+
+    public function findOneByUid(string $uid): ?User
+    {
+        $sql = <<<SQL
+            SELECT  seq,
+                    uid,
+                    id,
+                    email,
+                    password,
+                    created_at,
+                    updated_at
+            FROM    user
+            WHERE   uid = ?
+        SQL;
+
+        /** @var \React\Mysql\MysqlResult */
+        $result = await($this->db->getClient()
+            ->query($sql, [$uid])
+        );
+
+        if (empty($result->resultRows)) {
+            return null;
+        }
+
+        return User::fromMysqlResultRow($result->resultRows[0]);
     }
 }

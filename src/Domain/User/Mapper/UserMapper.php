@@ -3,6 +3,7 @@
 namespace Damoyo\Api\Domain\User\Mapper;
 
 use Damoyo\Api\Domain\User\Dto\UserCreate\UserCreateRequest;
+use Damoyo\Api\Domain\User\Dto\UserUpdate\UserUpdateRequest;
 use Damoyo\Api\Domain\User\Entity\User;
 use DateTime;
 use DateTimeZone;
@@ -42,6 +43,28 @@ class UserMapper
             throw new InvalidArgumentException($this->formatValidationErrors($errors));
         }
         
+        return $request;
+    }
+
+    public function toUserUpdateRequest(ServerRequestInterface $request): UserUpdateRequest
+    {
+        $data = $this->requestBodyToAssociativeArray($request);
+
+        $request = new UserUpdateRequest();
+        $request->email = $data['email'] ?? null;
+        $request->name = $data['name'] ?? null;
+        $request->password = $data['password'] ?? null;
+
+        // 유효성 검사
+        $violations = $this->validator->validate($request);
+        if (count($violations) > 0) {
+            $errorMessages = [];
+            foreach ($violations as $violation) {
+                $errorMessages[] = $violation->getMessage();
+            }
+            throw new InvalidArgumentException(implode(', ', $errorMessages));
+        }
+
         return $request;
     }
 

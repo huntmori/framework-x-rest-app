@@ -9,6 +9,7 @@ interface UserRepository
     public function find(): array;
     public function findOneById(string $id): ?User;
     public function findOneByEmail(string $email): ?User;
+    public function findOneByUid(string $uid): ?User;
     
     public function save(User $user): ?int;
 

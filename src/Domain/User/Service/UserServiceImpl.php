@@ -3,6 +3,7 @@
 namespace Damoyo\Api\Domain\User\Service;
 
 use Damoyo\Api\Domain\User\Dto\UserCreate\UserCreateRequest;
+use Damoyo\Api\Domain\User\Dto\UserUpdate\UserUpdateRequest;
 use Damoyo\Api\Domain\User\Repository\UserRepository;
 use Damoyo\Api\Domain\User\Entity\User;
 use Exception;
@@ -52,5 +53,38 @@ class UserServiceImpl implements UserService
     public function getUserByUid(string $uid): ?User
     {
         return $this->userRepository->findByUid((string)$uid);
+    }
+
+    public function updateUser(string $uid, UserUpdateRequest $userData): ?User
+    {
+        $user = $this->userRepository->findOneByUid($uid);
+        
+        if ($user === null) {
+            throw new Exception("User not found");
+        }
+
+        // 이메일 중복 체크 (변경된 경우에만)
+        if ($userData->email !== null && $userData->email !== $user->email) {
+            $emailExist = $this->userRepository->findOneByEmail($userData->email);
+            if ($emailExist !== null) {
+                throw new Exception("Email already exists");
+            }
+            $user->setEmail($userData->email);
+        }
+
+        // 이름 업데이트
+        if ($userData->name !== null) {
+            $user->name = $userData->name;
+        }
+
+        // 비밀번호 업데이트 (변경된 경우에만)
+        if ($userData->password !== null) {
+            $hashedPassword = password_hash($userData->password, PASSWORD_DEFAULT);
+            $user->setPassword($hashedPassword);
+        }
+
+        $this->userRepository->save($user);
+
+        return $this->userRepository->findOneByUid($uid);
     }
 }

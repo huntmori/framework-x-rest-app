@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "52.79.118.250",
+            "port": 57686,
+            "driver": "MariaDB",
+            "name": "dev",
+            "database": "damoyo",
+            "username": "external",
+            "askForPassword": true
+        }
+    ]
+}

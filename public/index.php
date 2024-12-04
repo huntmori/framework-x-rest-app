@@ -15,7 +15,7 @@ use Damoyo\Api\Common\Exception\GlobalExceptionHandler;
 use Damoyo\Api\Common\Logger\AppLogger;
 use Damoyo\Api\Common\Middleware\ErrorHandlerMiddleware;
 use React\EventLoop\Loop;
-
+use Monolog\Handler\Handler AS MonoLogHandler;
 
 $logger = AppLogger::getInstance();
 $logger->info('Application starting...');
@@ -32,7 +32,7 @@ $containerBuilder->addDefinitions([
         ),
     UserService::class => \DI\create(UserServiceImpl::class)
         ->constructor(\DI\get(UserRepository::class)),
-    \Monolog\Handler\Handler::class => \DI\create(Monolog\Handler\Handler::class),
+    MonoLogHandler::class => \DI\create(MonoLogHandler::class),
     GlobalExceptionHandler::class => \DI\create(GlobalExceptionHandler::class)
 ]);
 
@@ -57,7 +57,7 @@ function trackMemoryUsage() {
 
 // ReactPHP 이벤트 루프를 사용하여 60초마다 메모리 사용량 추적
 $loop = Loop::get();
-$loop->addPeriodicTimer(60.0, 'trackMemoryUsage');
+$loop->addPeriodicTimer(10.0, 'trackMemoryUsage');
 
 $logger->info('Server starting on http://127.0.0.1:8080');
 $app->run();

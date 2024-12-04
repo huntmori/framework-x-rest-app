@@ -98,11 +98,10 @@ class UserRepositoryImpl implements UserRepository
                     password, 
                     created_at, 
                     updated_at
-                ) VALUES (?, ?, ?, ?, ?, NOW(), NOW())
+                ) VALUES (UUID(), ?, ?, ?, NOW(), NOW())
             SQL;
 
             $params = [
-                $user->uid ?? bin2hex(random_bytes(16)),
                 $user->id,
                 $user->email,
                 $user->password

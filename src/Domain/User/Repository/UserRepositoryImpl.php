@@ -189,8 +189,8 @@ class UserRepositoryImpl implements UserRepository
         SQL;
 
         $result = await($db->query($sql, [$email]));
-        
-        if (empty($result)) {
+    
+        if (empty($result->resultRows)) {
             return null;
         }
 

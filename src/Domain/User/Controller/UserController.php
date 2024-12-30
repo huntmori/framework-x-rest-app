@@ -30,7 +30,7 @@ class UserController
         $this->exceptionHandler = $exceptionHandler;
     }
 
-    #[Route(method: HttpMethod::GET, path: '/api/user')]
+    #[Route(method: HttpMethod::GET, path: '/api/user', responseType: 'application/json')]
     public function listUsers(ServerRequestInterface $request): ResponseDto 
     {    
         $users = $this->userService->listUsers();
@@ -41,7 +41,7 @@ class UserController
             ->data($users);
     }
 
-    #[Route(method: HttpMethod::POST, path: '/api/user')]
+    #[Route(method: HttpMethod::POST, path: '/api/user', responseType: 'application/json')]
     public function creatUser(ServerRequestInterface $request): ResponseDto
     {
         $userRequest = $this->mapper->toUserCreateRequest($request);
@@ -53,7 +53,7 @@ class UserController
             ->data($user);
     }
 
-    #[Route(method: HttpMethod::GET, path: '/api/user/{uid}')]
+    #[Route(method: HttpMethod::GET, path: '/api/user/{uid}', responseType: 'application/json')]
     public function getUser(ServerRequestInterface $request): ResponseDto
     {
         $uid = $request->getAttribute('uid');
@@ -74,7 +74,7 @@ class UserController
             ->data($user);
     }
 
-    #[Route(method:HttpMethod::PATCH, path: '/api/user/{uid}')]
+    #[Route(method:HttpMethod::PATCH, path: '/api/user/{uid}', responseType: 'application/json')]
     public function updateUser(ServerRequestInterface $request): ResponseDto
     {
         $uid = $request->getAttribute('uid');

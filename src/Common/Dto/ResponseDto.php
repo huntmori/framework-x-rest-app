@@ -5,25 +5,13 @@ use JsonSerializable;
 
 class ResponseDto implements JsonSerializable {
 
-    public int $code {
-        get => $this->code;
-        set => $this->code = $value;
-    }
+    public int $code;
     
-    public bool $result {
-        get => $this->result;
-        set => $this->result = $value;
-    }
+    public bool $result;
     
-    public string $message = '' {
-        get => $this->message;
-        set => $this->message = $value;
-    }
+    public string $message = '';
     
-    public mixed $data {
-        get => $this->data;
-        set => $this->data = $value;
-    }
+    public mixed $data;
 
     public function jsonSerialize(): mixed {
         return get_object_vars($this);

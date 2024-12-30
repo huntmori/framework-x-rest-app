@@ -21,13 +21,30 @@ class AttributeRouter
         $this->container = $container;
     }
 
-    private function convertToResponse(ResponseDto $dto): Response
+    private function convertToResponse(ResponseDto $dto, string $responseType): Response
     {
-        return new Response(
-            $dto->code,
-            ['Content-Type' => 'application/json'],
-            json_encode($dto)
-        );
+        $headers = ['Content-Type' => $responseType];
+        $body = '';
+
+        switch ($responseType) {
+            case 'application/json':
+                $body = json_encode($dto);
+                break;
+            case 'text/xml':
+                // XML 변환 로직 추가
+                $body = $this->convertToXml($dto);
+                break;
+            // 다른 Content-Type에 대한 처리 추가
+        }
+
+        return new Response(200, $headers, $body);
+    }
+
+    private function convertToXml(ResponseDto $dto): string
+    {
+        // XML 변환 로직 구현
+        // ...
+        return $xmlString;
     }
 
     public function registerController(string $controllerClass): void
@@ -35,24 +52,27 @@ class AttributeRouter
         $reflection = new ReflectionClass($controllerClass);
         $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
 
-        foreach ($methods as $method) {
+        foreach ($methods as $method) 
+        {
             $attributes = $method->getAttributes(Route::class);
             if (empty($attributes)) {
                 continue;
             }
 
-            foreach ($attributes as $attribute) {
+            foreach ($attributes as $attribute) 
+            {
                 $route = $attribute->newInstance();
                 $path = $route->path;
                 $httpMethod = strtolower($route->method->value);
+                $responseType = $route->responseType ?? 'application/json'; // 기본 응답 유형 설정
 
-                $this->app->$httpMethod($path, function (ServerRequestInterface $request) use ($controllerClass, $method) {
+                $this->app->$httpMethod($path, function (ServerRequestInterface $request) use ($controllerClass, $method, $responseType) {
                     try {
                         $controller = $this->container->get($controllerClass);
                         $result = $controller->{$method->getName()}($request);
                         
                         if ($result instanceof ResponseDto) {
-                            return $this->convertToResponse($result);
+                            return $this->convertToResponse($result, $responseType);
                         }
                         
                         return $result;
@@ -63,7 +83,7 @@ class AttributeRouter
                         $errorResponse->message = 'Internal Server Error';
                         $errorResponse->data = ['error' => $e->getMessage()];
                         
-                        return $this->convertToResponse($errorResponse);
+                        return $this->convertToResponse($errorResponse, $responseType);
                     }
                 });
             }

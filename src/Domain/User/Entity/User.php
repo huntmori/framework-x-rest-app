@@ -6,103 +6,63 @@ use DateTime;
 
 class User
 {
-    
-    private int $_seq = 0;
-    public int $seq {
-        get => $this->_seq;
-        set(int $value) {
-            $this->_seq = $value;
-        }
-    }
+    public int $seq;
     public function setSeq(int $seq): self
     {
-        $this->_seq = $seq;
+        $this->seq = $seq;
         return $this;
     }
 
-    private string $_uid = '';
-    public string $uid {
-        get => $this->_uid;
-        set(string $value) {
-            $this->_uid = $value;
-        }
-    }
+    public string $uid = '';
     public function setUid(string $uid): self
     {
-        $this->_uid = $uid;
+        $this->uid = $uid;
         return $this;
     }
 
-    private string $_id = '';
-    public string $id {
-        get => $this->_id;
-        set(string $value) {
-            $this->_id = $value;
-        }
-    }
+    public string $id = '';
     public function setId(string $id): self
     {
-        $this->_id = $id;
+        $this->id = $id;
         return $this;
     }
 
-    private string $_email = '';
-    public string $email {
-        get => $this->_email;
-        set(string $value) {
-            $this->_email = $value;
-        }
-    }
-    public function setEmail(string $email): self
+    public string $email = '';
+    public function getEmail(): string
     {
-        $this->_email = $email;
+        return $this->email;
+    }
+
+    public function setEmail(string $value): self
+    {
+        $this->email = $value;
         return $this;
     }
 
-    private string $_password = '';
-    public string $password {
-        get => $this->_password;
-        set(string $value) {
-            $this->_password = $value;
-        }
-    }
+    public string $password = '';
     public function setPassword(string $password): self
     {
-        $this->_password = $password;
+        $this->password = $password;
         return $this;
     }
 
-    private DateTime $_createdAt;
-    public DateTime $createdAt {
-        get => $this->_createdAt;
-        set(DateTime $value) {
-            $this->_createdAt = $value;
-        }
-    }
+    public DateTime $createdAt;
     public function setCreatedAt(DateTime $createdAt): self
     {
-        $this->_createdAt = $createdAt;
+        $this->createdAt = $createdAt;
         return $this;
     }
 
-    private DateTime $_updatedAt;
-    public DateTime $updatedAt {
-        get => $this->_updatedAt;
-        set(DateTime $value) {
-            $this->_updatedAt = $value;
-        }
-    }
+    private DateTime $updatedAt;
     public function setUpdatedAt(DateTime $updatedAt): self
     {
-        $this->_updatedAt = $updatedAt;
+        $this->updatedAt = $updatedAt;
         return $this;
     }
-
 
     public function __construct()
     {
-        $this->_createdAt = new DateTime();
-        $this->_updatedAt = new DateTime();
+        // Constructor implementation
     }
 
     public static function init(): self

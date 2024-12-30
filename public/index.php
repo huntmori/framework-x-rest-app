@@ -1,6 +1,12 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
-
+\Sentry\init([
+  'dsn' => 'https://9f6e3a7ae4e9bf1b0ca0f68f4bfc9e8f@o4508475231961088.ingest.us.sentry.io/4508475233992704',
+  // Specify a fixed sample rate
+  'traces_sample_rate' => 1.0,
+  // Set a sampling rate for profiling - this is relative to traces_sample_rate
+  'profiles_sample_rate' => 1.0,
+]);
 // Set timezone
 date_default_timezone_set('Asia/Seoul');
 

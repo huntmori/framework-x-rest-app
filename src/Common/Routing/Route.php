@@ -8,6 +8,7 @@ use Damoyo\Api\Common\Routing\HttpMethod;
 class Route {
     public function __construct(
         public string $path,
-        public HttpMethod $method = HttpMethod::GET
+        public HttpMethod $method = HttpMethod::GET,
+        public string $responseType = ResponseDto::class
     ) {}
 }

@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Damoyo\Api\Domain\User\Repository;
 
-use Damoyo\Api\Common\Database\DatabaseService;
-use Damoyo\Api\Domain\User\Mapper\UserMapper;
-use DateTime;
+use Damoyo\Api\Common\Common\Database\DatabaseService;
 use Damoyo\Api\Domain\User\Entity\User;
+use Damoyo\Api\Domain\User\Mapper\UserMapper;
 use function React\Async\await;
 
 class UserRepositoryImpl implements UserRepository 

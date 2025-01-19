@@ -1,16 +1,15 @@
 <?php
 
-use Damoyo\Api\Common\Exception\GlobalExceptionHandler;
+use Damoyo\Api\Common\Common\Database\DatabaseService;
+use Damoyo\Api\Common\Common\Exception\GlobalExceptionHandler;
 use Damoyo\Api\Domain\User\Controller\UserController;
 use Damoyo\Api\Domain\User\Mapper\UserMapper;
 use Damoyo\Api\Domain\User\Repository\UserRepository;
 use Damoyo\Api\Domain\User\Repository\UserRepositoryImpl;
 use Damoyo\Api\Domain\User\Service\UserService;
 use Damoyo\Api\Domain\User\Service\UserServiceImpl;
-use Damoyo\Api\Common\Database\DatabaseService;
-use function DI\create;
-use function DI\get;
 use function DI\autowire;
+use function DI\get;
 
 return [
     GlobalExceptionHandler::class => autowire(),

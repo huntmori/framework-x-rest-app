@@ -1,14 +1,14 @@
 <?php
 
-namespace Damoyo\Api\Common\Routing;
+namespace Damoyo\Api\Common\Common\Routing;
 
+use Damoyo\Api\Common\Common\Dto\ResponseDto;
 use DI\Container;
 use FrameworkX\App;
-use ReflectionClass;
-use ReflectionMethod;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Message\Response;
-use Damoyo\Api\Common\Dto\ResponseDto;
+use ReflectionClass;
+use ReflectionMethod;
 
 class AttributeRouter
 {

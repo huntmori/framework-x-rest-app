@@ -2,17 +2,14 @@
 
 namespace Damoyo\Api\Domain\User\Controller;
 
-use Damoyo\Api\Common\Dto\ResponseDto;
-use Damoyo\Api\Common\Routing\Route;
-use Damoyo\Api\Common\Routing\HttpMethod;
+use Damoyo\Api\Common\Common\Dto\ResponseDto;
+use Damoyo\Api\Common\Common\Exception\GlobalExceptionHandler;
+use Damoyo\Api\Common\Common\Routing\HttpMethod;
+use Damoyo\Api\Common\Common\Routing\Route;
 use Damoyo\Api\Domain\User\Mapper\UserMapper;
 use Damoyo\Api\Domain\User\Service\UserService;
-use Damoyo\Api\Common\Exception\GlobalExceptionHandler;
-use Damoyo\Api\Common\Exception\ValidationException;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Throwable;
 use Exception;
+use Psr\Http\Message\ServerRequestInterface;
 
 class UserController
 {
@@ -30,7 +27,11 @@ class UserController
         $this->exceptionHandler = $exceptionHandler;
     }
 
-    #[Route(method: HttpMethod::GET, path: '/api/user', responseType: 'application/json')]
+    #[Route(
+        path: '/api/user',
+        method: HttpMethod::GET,
+        responseType: 'application/json'
+    )]
     public function listUsers(ServerRequestInterface $request): ResponseDto 
     {    
         $users = $this->userService->listUsers();
@@ -41,7 +42,11 @@ class UserController
             ->data($users);
     }
 
-    #[Route(method: HttpMethod::POST, path: '/api/user', responseType: 'application/json')]
+    #[Route(
+        path: '/api/user',
+        method: HttpMethod::POST,
+        responseType: 'application/json'
+    )]
     public function creatUser(ServerRequestInterface $request): ResponseDto
     {
         $userRequest = $this->mapper->toUserCreateRequest($request);
@@ -53,7 +58,10 @@ class UserController
             ->data($user);
     }
 
-    #[Route(method: HttpMethod::GET, path: '/api/user/{uid}', responseType: 'application/json')]
+    #[Route(
+        path: '/api/user/{uid}',
+        method: HttpMethod::GET,
+        responseType: 'application/json')]
     public function getUser(ServerRequestInterface $request): ResponseDto
     {
         $uid = $request->getAttribute('uid');
@@ -61,10 +69,7 @@ class UserController
             throw new Exception('UID is empty');
         }
 
-        $user = null;
-        if (!empty($uid)) {
-            $user = $this->userService->getUserByUid($uid);
-        }
+        $user = $this->userService->getUserByUid($uid);
 
 
         return ResponseDto::init()
@@ -74,7 +79,11 @@ class UserController
             ->data($user);
     }
 
-    #[Route(method:HttpMethod::PATCH, path: '/api/user/{uid}', responseType: 'application/json')]
+    #[Route(
+        path: '/api/user/{uid}',
+        method: HttpMethod::PATCH,
+        responseType: 'application/json'
+    )]
     public function updateUser(ServerRequestInterface $request): ResponseDto
     {
         $uid = $request->getAttribute('uid');

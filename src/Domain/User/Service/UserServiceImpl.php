@@ -25,19 +25,18 @@ class UserServiceImpl implements UserService
     public function createUser(UserCreateRequest $userData): int
     {
         //check ID duplication
-        $idExsist = $this->userRepository->findOneById($userData->id);
-        if ($idExsist !== null) {
+        $idExist = $this->userRepository->findOneById($userData->id);
+        if ($idExist !== null) {
             throw new Exception("ID duplication");
         }
         // check Email duplication
-        $emailExsist = $this->userRepository->findOneByEmail($userData->email);
-        if ($emailExsist !== null) {
+        $emailExist = $this->userRepository->findOneByEmail($userData->email);
+        if ($emailExist !== null) {
             throw new Exception("Email duplication");
         }
         // password encryption
         $hashedPassword = password_hash($userData->password, PASSWORD_DEFAULT);
-        
-        /** @var User $user */ 
+
         $user = User::init()
             ->setId($userData->id)
             ->setEmail($userData->email)
@@ -52,7 +51,7 @@ class UserServiceImpl implements UserService
 
     public function getUserByUid(string $uid): ?User
     {
-        return $this->userRepository->findByUid((string)$uid);
+        return $this->userRepository->findByUid($uid);
     }
 
     public function updateUser(string $uid, UserUpdateRequest $userData): ?User

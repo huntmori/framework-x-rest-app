@@ -1,11 +1,11 @@
 <?php
 
-namespace Damoyo\Api\Common\Logger;
+namespace Damoyo\Api\Common\Common\Logger;
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\RotatingFileHandler;
 use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\RotatingFileHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
 class AppLogger implements LoggerInterface

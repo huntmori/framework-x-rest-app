@@ -2,10 +2,12 @@
 
 namespace Damoyo\Api\Domain\User\Controller;
 
-use Damoyo\Api\Common\Common\Dto\ResponseDto;
-use Damoyo\Api\Common\Common\Exception\GlobalExceptionHandler;
-use Damoyo\Api\Common\Common\Routing\HttpMethod;
-use Damoyo\Api\Common\Common\Routing\Route;
+use Damoyo\Api\Common\Http\RequestMapper;
+use Damoyo\Api\Common\Dto\ResponseDto;
+use Damoyo\Api\Common\Exception\GlobalExceptionHandler;
+use Damoyo\Api\Common\Routing\HttpMethod;
+use Damoyo\Api\Common\Routing\Route;
+use Damoyo\Api\Domain\User\Dto\UserCreate\UserCreateRequest;
 use Damoyo\Api\Domain\User\Mapper\UserMapper;
 use Damoyo\Api\Domain\User\Service\UserService;
 use Exception;
@@ -47,9 +49,13 @@ class UserController
         method: HttpMethod::POST,
         responseType: 'application/json'
     )]
-    public function creatUser(ServerRequestInterface $request): ResponseDto
+    public function createUser(
+        #[RequestMapper(
+            UserMapper::class,
+            'toUserCreateRequest'
+        )] UserCreateRequest $userRequest
+    ): ResponseDto
     {
-        $userRequest = $this->mapper->toUserCreateRequest($request);
         $user = $this->userService->createUser($userRequest);
         return ResponseDto::init()
             ->code(201)

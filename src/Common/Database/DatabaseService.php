@@ -1,5 +1,5 @@
 <?php
-namespace Damoyo\Api\Common\Common\Database;
+namespace Damoyo\Api\Common\Database;
 
 use React\Mysql\MysqlClient;
 

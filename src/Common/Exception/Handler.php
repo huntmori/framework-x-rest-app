@@ -1,6 +1,6 @@
 <?php
 
-namespace Damoyo\Api\Common\Common\Exception;
+namespace Damoyo\Api\Common\Exception;
 
 use FrameworkX\ErrorHandler;
 use React\Http\Message\Response;

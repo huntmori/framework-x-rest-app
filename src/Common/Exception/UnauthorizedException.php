@@ -1,6 +1,6 @@
 <?php
 
-namespace Damoyo\Api\Common\Common\Exception;
+namespace Damoyo\Api\Common\Exception;
 
 use Exception;
 

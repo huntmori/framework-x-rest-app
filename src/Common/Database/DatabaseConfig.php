@@ -10,8 +10,8 @@ class DatabaseConfig {
 
     public function __construct(
         string $host = 'localhost', 
-        string $username = 'username', 
-        string $password = 'password', 
+        string $username = 'root',
+        string $password = '1q2w3e',
         int $port = 3306,
         string $database = 'damoyo'
     ) {

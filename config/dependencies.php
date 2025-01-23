@@ -1,7 +1,7 @@
 <?php
 
-use Damoyo\Api\Common\Common\Database\DatabaseService;
-use Damoyo\Api\Common\Common\Exception\GlobalExceptionHandler;
+use Damoyo\Api\Common\Database\DatabaseService;
+use Damoyo\Api\Common\Exception\GlobalExceptionHandler;
 use Damoyo\Api\Domain\User\Controller\UserController;
 use Damoyo\Api\Domain\User\Mapper\UserMapper;
 use Damoyo\Api\Domain\User\Repository\UserRepository;
@@ -21,7 +21,6 @@ return [
         ->constructorParameter('repository', get(UserRepository::class)),
     
     UserMapper::class => autowire(),
-        
     UserController::class => autowire()
         ->constructorParameter('userMapper', get(UserMapper::class))
         ->constructorParameter('userService', get(UserService::class))

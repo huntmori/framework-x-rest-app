@@ -2,11 +2,11 @@
 require __DIR__ . '/../vendor/autoload.php';
 date_default_timezone_set('Asia/Seoul');
 
-use Damoyo\Api\Common\Common\Database\DatabaseService;
-use Damoyo\Api\Common\Common\Exception\GlobalExceptionHandler;
-use Damoyo\Api\Common\Common\Logger\AppLogger;
-use Damoyo\Api\Common\Common\Middleware\ErrorHandlerMiddleware;
-use Damoyo\Api\Common\Common\Routing\AttributeRouter;
+use Damoyo\Api\Common\Database\DatabaseService;
+use Damoyo\Api\Common\Exception\GlobalExceptionHandler;
+use Damoyo\Api\Common\Logger\AppLogger;
+use Damoyo\Api\Common\Middleware\ErrorHandlerMiddleware;
+use Damoyo\Api\Common\Routing\AttributeRouter;
 use Damoyo\Api\Domain\User\Mapper\UserMapper;
 use Damoyo\Api\Domain\User\Repository\UserRepository;
 use Damoyo\Api\Domain\User\Repository\UserRepositoryImpl;

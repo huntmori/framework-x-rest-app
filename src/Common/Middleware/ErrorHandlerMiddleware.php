@@ -1,9 +1,9 @@
 <?php
 
-namespace Damoyo\Api\Common\Common\Middleware;
+namespace Damoyo\Api\Common\Middleware;
 
-use Damoyo\Api\Common\Common\Dto\ResponseDto;
-use Damoyo\Api\Common\Common\Logger\AppLogger;
+use Damoyo\Api\Common\Dto\ResponseDto;
+use Damoyo\Api\Common\Logger\AppLogger;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Message\Response;
 use Throwable;

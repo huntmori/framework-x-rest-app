@@ -1,5 +1,5 @@
 <?php
-namespace Damoyo\Api\Common\Common\Routing;
+namespace Damoyo\Api\Common\Routing;
 
 enum HttpMethod: string {
     case GET = 'GET';

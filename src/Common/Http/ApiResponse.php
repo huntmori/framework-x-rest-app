@@ -1,6 +1,6 @@
 <?php
 
-namespace Damoyo\Api\Common\Common\Http;
+namespace Damoyo\Api\Common\Http;
 
 use React\Http\Message\Response;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Damoyo\Api\Common\Common\Routing;
+namespace Damoyo\Api\Common\Routing;
 
-use Damoyo\Api\Common\Common\Dto\ResponseDto;
+use Damoyo\Api\Common\Dto\ResponseDto;
 use DI\Container;
 use FrameworkX\App;
 use Psr\Http\Message\ServerRequestInterface;
@@ -59,6 +59,16 @@ class AttributeRouter
                 continue;
             }
 
+            // RequestMapper 매개변수 필터링
+            $params = $method->getParameters();
+            $mapper = null;
+            foreach ($params as $param) {
+                $search = $param->getAttributes();
+                if (!empty($search)) {
+                    $mapper = $search[0]->newInstance();
+                }
+            }
+
             foreach ($attributes as $attribute) 
             {
                 $route = $attribute->newInstance();
@@ -66,11 +76,28 @@ class AttributeRouter
                 $httpMethod = strtolower($route->method->value);
                 $responseType = $route->responseType ?? 'application/json'; // 기본 응답 유형 설정
 
-                $this->app->$httpMethod($path, function (ServerRequestInterface $request) use ($controllerClass, $method, $responseType) {
+                $this->app->$httpMethod($path, function (ServerRequestInterface $request) use (
+                    $controllerClass,
+                    $method,
+                    $responseType,
+                    $mapper
+                ) {
                     try {
                         $controller = $this->container->get($controllerClass);
-                        $result = $controller->{$method->getName()}($request);
-                        
+
+                        $mapperClassName = $mapper->mapperClass ?? null;
+                        $mapperMethod = $mapper->mapperMethod ?? null;
+
+                        $result = null;
+                        if($mapperClassName && $mapperMethod) {
+                            $mapperInstance = $this->container->get($mapperClassName);
+                            $dto = $mapperInstance->{$mapperMethod}($request);
+                            $result = $controller->{$method->getName()}($dto);
+                        } else {
+                            $result = $controller->{$method->getName()}($request);
+                        }
+
+
                         if ($result instanceof ResponseDto) {
                             return $this->convertToResponse($result, $responseType);
                         }

@@ -34,6 +34,7 @@ class UserMapper
         $data = $this->requestBodyToAssociativeArray($request);
 
         $request = new UserCreateRequest();
+        $request->request = $request;
         $request->id = $data['id'] ?? null;
         $request->email = $data['email'] ?? null;
         $request->password = $data['password'] ?? null;

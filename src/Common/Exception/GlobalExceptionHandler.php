@@ -1,8 +1,8 @@
 <?php
 
-namespace Damoyo\Api\Common\Common\Exception;
+namespace Damoyo\Api\Common\Exception;
 
-use Damoyo\Api\Common\Common\Dto\ResponseDto;
+use Damoyo\Api\Common\Dto\ResponseDto;
 use Throwable;
 
 class GlobalExceptionHandler

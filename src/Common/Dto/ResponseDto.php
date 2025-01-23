@@ -1,5 +1,5 @@
 <?php
-namespace Damoyo\Api\Common\Common\Dto;
+namespace Damoyo\Api\Common\Dto;
 
 use JsonSerializable;
 

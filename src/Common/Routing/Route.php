@@ -1,8 +1,7 @@
 <?php
-namespace Damoyo\Api\Common\Common\Routing;
+namespace Damoyo\Api\Common\Routing;
 
 use Attribute;
-use Damoyo\Api\Common\Routing\ResponseDto;
 
 #[Attribute(Attribute::TARGET_METHOD)]
 class Route {

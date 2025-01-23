@@ -1,6 +1,6 @@
 <?php
 
-namespace Damoyo\Api\Common\Common\Logger;
+namespace Damoyo\Api\Common\Logger;
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\RotatingFileHandler;

@@ -6,6 +6,7 @@ namespace Damoyo\Api\Domain\User\Repository;
 use Damoyo\Api\Common\Database\DatabaseService;
 use Damoyo\Api\Domain\User\Entity\User;
 use Damoyo\Api\Domain\User\Mapper\UserMapper;
+use React\Mysql\QueryResult;
 use function React\Async\await;
 
 class UserRepositoryImpl implements UserRepository 
@@ -34,9 +35,8 @@ class UserRepositoryImpl implements UserRepository
                 FROM    user
             SQL;
 
-        /** @var \React\Mysql\MysqlResult */
-        $result = await($this->db->getClient()
-            ->query($sql, [])
+        /** @var QueryResult $result */
+        $result = await($this->db->client->query($sql, [])
         );
 
         if (empty($result)) {
@@ -53,9 +53,9 @@ class UserRepositoryImpl implements UserRepository
 
     public function findOneById(string $id): ?User
     {
-        /** @var \React\Mysql\MysqlResult */
-        $result = await($this->db->getClient()
-            ->query(<<<SQL
+        /** @var QueryResult $result*/
+        $result = await($this->db->client->query(
+            <<<SQL
                 SELECT  seq,
                         uid,
                         id,
@@ -133,8 +133,7 @@ class UserRepositoryImpl implements UserRepository
         }
 
         /** @var \React\Mysql\MysqlResult */
-        $result = await($this->db->getClient()
-            ->query($sql, $params)
+        $result = await($this->db->client->query($sql, $params)
         );
 
         // 마지막으로 삽입된 ID 또는 영향받은 행 수 반환
@@ -145,7 +144,7 @@ class UserRepositoryImpl implements UserRepository
      */
     public function findByUid(string $uid): ?User 
     {
-        $db = $this->db->getClient();
+        $db = $this->db->client;
         $sql = <<<SQL
             SELECT  seq,
                     uid,
@@ -173,7 +172,7 @@ class UserRepositoryImpl implements UserRepository
      */
     public function findOneByEmail(string $email): ?User 
     {
-        $db = $this->db->getClient();
+        $db = $this->db->client;
         $sql = <<<SQL
             SELECT  seq,
                     uid,
@@ -216,9 +215,8 @@ class UserRepositoryImpl implements UserRepository
             WHERE   uid = ?
         SQL;
 
-        /** @var \React\Mysql\MysqlResult */
-        $result = await($this->db->getClient()
-            ->query($sql, [$uid])
+        /** @var \React\Mysql\QueryResult $result */
+        $result = await($this->db->client->query($sql, [$uid])
         );
 
         if (empty($result->resultRows)) {

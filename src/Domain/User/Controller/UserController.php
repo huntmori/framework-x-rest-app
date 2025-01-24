@@ -8,6 +8,7 @@ use Damoyo\Api\Common\Exception\GlobalExceptionHandler;
 use Damoyo\Api\Common\Routing\HttpMethod;
 use Damoyo\Api\Common\Routing\Route;
 use Damoyo\Api\Domain\User\Dto\UserCreate\UserCreateRequest;
+use Damoyo\Api\Domain\User\Dto\UserUpdate\UserUpdateRequest;
 use Damoyo\Api\Domain\User\Mapper\UserMapper;
 use Damoyo\Api\Domain\User\Service\UserService;
 use Exception;
@@ -50,10 +51,8 @@ class UserController
         responseType: 'application/json'
     )]
     public function createUser(
-        #[RequestMapper(
-            UserMapper::class,
-            'toUserCreateRequest'
-        )] UserCreateRequest $userRequest
+        #[RequestMapper(UserMapper::class, 'toUserCreateRequest')]
+        UserCreateRequest $userRequest
     ): ResponseDto
     {
         $user = $this->userService->createUser($userRequest);
@@ -90,16 +89,12 @@ class UserController
         method: HttpMethod::PATCH,
         responseType: 'application/json'
     )]
-    public function updateUser(ServerRequestInterface $request): ResponseDto
+    public function updateUser(
+        #[RequestMapper(UserMapper::class, 'toUserUpdateRequest')]
+        UserUpdateRequest $request
+    ): ResponseDto
     {
-        $uid = $request->getAttribute('uid');
-
-        if (empty($uid)) {
-            throw new Exception("UID is empty");
-        }
-
-        $userRequest = $this->mapper->toUserUpdateRequest($request);
-        $user = $this->userService->updateUser($uid, $userRequest);
+        $user = $this->userService->updateUser($request->uid, $request);
         return ResponseDto::init()
             ->code(200)
             ->result(true)

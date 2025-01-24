@@ -47,11 +47,11 @@ class UserMapper
         return $request;
     }
 
-    public function toUserUpdateRequest(ServerRequestInterface $request): UserUpdateRequest
+    public function toUserUpdateRequest(ServerRequestInterface $serverRequest): UserUpdateRequest
     {
-        $data = $this->requestBodyToAssociativeArray($request);
-
+        $data = $this->requestBodyToAssociativeArray($serverRequest);
         $request = new UserUpdateRequest();
+        $request->uid = $serverRequest->getAttribute('uid');
         $request->email = $data['email'] ?? null;
         $request->name = $data['name'] ?? null;
         $request->password = $data['password'] ?? null;

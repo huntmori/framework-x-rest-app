@@ -7,8 +7,8 @@
         }
     },
     "require": {
-        "clue/framework-x": "^0.16",
-        "react/mysql": "^0.7@dev",
+        "clue/framework-x": "^0.17",
+        "react/mysql": "^0.6.0",
         "php-di/php-di": "^7.0",
         "react/event-loop": "^1.2",
         "symfony/validator": "^7.2",

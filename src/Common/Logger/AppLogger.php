@@ -27,7 +27,7 @@ class AppLogger implements LoggerInterface
         
         // File handler for errors and above
         $fileHandler = new RotatingFileHandler(
-            __DIR__ . '/../../../../logs/app.log',
+            __DIR__ . '/logs/app.log',
             0,
             Logger::ERROR
         );

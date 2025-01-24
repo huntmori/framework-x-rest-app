@@ -1,12 +1,11 @@
 <?php
 namespace Damoyo\Api\Domain\User\Dto\UserCreate;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UserCreateRequest
 {
-    public ServerRequestInterface $request;
+    public $request;
     #[Assert\NotBlank(message: 'ID는 필수 입력값입니다.')]
     public string $id;
 

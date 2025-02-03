@@ -11,8 +11,10 @@ use function React\Async\await;
 
 class UserRepositoryImpl implements UserRepository 
 {
-    private ?DatabaseService $db = null;
+    private ?DatabaseService $db;
     private UserMapper $mapper;
+
+    CONST string USER_TABLE_NAME = 'user';
 
     public function __construct(
         DatabaseService $db,
@@ -24,28 +26,24 @@ class UserRepositoryImpl implements UserRepository
 
     public function find(): array
     {
-        $sql = <<<SQL
-                SELECT  seq,
-                        uid,
-                        id,
-                        email,
-                        password,
-                        created_at,
-                        updated_at
-                FROM    user
-            SQL;
-
-        /** @var QueryResult $result */
-        $result = await($this->db->client->query($sql, [])
-        );
-
-        if (empty($result)) {
-            return [];
-        }
+        $result = $this->db->client->
+            select(
+                $this::USER_TABLE_NAME,
+                [
+                    'seq',
+                    'uid',
+                    'id',
+                    'email',
+                    'password',
+                    'created_at',
+                    'updated_at'
+                ]
+            );
 
         $data = [];
-        for($i=0; $i<count($result->resultRows); $i++) {
-            $data[] = User::fromMysqlResultRow($result->resultRows[$i]);
+        $length = count($result);
+        for($i=0; $i<$length; $i++) {
+            $data[] = User::fromMysqlResultRow($result[$i]);
         }
 
         return $data;
@@ -53,32 +51,23 @@ class UserRepositoryImpl implements UserRepository
 
     public function findOneById(string $id): ?User
     {
-        /** @var QueryResult $result*/
-        $result = await($this->db->client->query(
-            <<<SQL
-                SELECT  seq,
-                        uid,
-                        id,
-                        email,
-                        password,
-                        created_at,
-                        updated_at
-                FROM    user
-                WHERE   id = ?
-                LIMIT   1
-            SQL, [$id])
-        );
+        $result = $this->db->client->
+            select(
+                $this::USER_TABLE_NAME,
+                [
+                    'seq',
+                    'uid',
+                    'id',
+                    'email',
+                    'password',
+                    'created_at',
+                    'updated_at'
+                ],
+                [ 'id' => $id ]
+            );
 
-        if (empty($result)) {
-            return null;
-        }
-
-        $userData = $result->resultRows[0] ?? null;
-        if ($userData === null) {
-            return null;
-        }
-
-        return $this->mapper->dbRowToUser($userData);
+        $row = $result[0];
+        return $this->mapper->dbRowToUser($row);
             
     }
 
@@ -167,10 +156,8 @@ class UserRepositoryImpl implements UserRepository
         $userData = $result->resultRows[0];
         return $this->mapper->dbRowToUser($userData);
     }
-    /**
-     * @inheritDoc
-     */
-    public function findOneByEmail(string $email): ?User 
+
+    public function findOneByEmail(string $email): ?User
     {
         $db = $this->db->client;
         $sql = <<<SQL
@@ -203,25 +190,14 @@ class UserRepositoryImpl implements UserRepository
 
     public function findOneByUid(string $uid): ?User
     {
-        $sql = <<<SQL
-            SELECT  seq,
-                    uid,
-                    id,
-                    email,
-                    password,
-                    created_at,
-                    updated_at
-            FROM    user
-            WHERE   uid = ?
-        SQL;
-
-        /** @var \React\Mysql\QueryResult $result */
-        $result = await($this->db->client->query($sql, [$uid])
+        $result = $this->db->client->select(
+            $this::USER_TABLE_NAME,
+            null,
+            [
+                "seq","uid","id","email","password","created_at","updated_at"
+            ],
+            [ 'uid' => $uid]
         );
-
-        if (empty($result->resultRows)) {
-            return null;
-        }
 
         return User::fromMysqlResultRow($result->resultRows[0]);
     }

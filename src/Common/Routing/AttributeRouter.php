@@ -34,10 +34,42 @@ class AttributeRouter
                 // XML 변환 로직 추가
                 $body = $this->convertToXml($dto);
                 break;
+            case 'text/html':
+                $body = $this->convertToHtml($dto);
+                break;
+
             // 다른 Content-Type에 대한 처리 추가
         }
 
         return new Response(200, $headers, $body);
+    }
+
+    public function echoHtml(string $html)
+    {
+        return new Response(200, ['Content-Type' => 'text/html'], $html);
+    }
+
+    private function convertToHtml(ResponseDto $dto): string
+    {
+        $html = "<html><head><title>Response</title></head><body>";
+        $html .= "<h1>Response Details</h1>";
+        $html .= "<p><strong>Code:</strong> {$dto->code}</p>";
+        $html .= "<p><strong>Result:</strong> " . ($dto->result ? 'Success' : 'Failure') . "</p>";
+        $html .= "<p><strong>Message:</strong> {$dto->message}</p>";
+
+        if (!empty($dto->data)) {
+            $html .= "<h2>Data:</h2><ul>";
+
+            foreach ($dto->data as $key => $value) {
+                $html .= "<li><strong>{$key}:</strong> " . htmlspecialchars((string)$value) . "</li>";
+            }
+
+            $html .= "</ul>";
+        }
+
+        $html .= "</body></html>";
+
+        return $html;
     }
 
     private function convertToXml(ResponseDto $dto): string
@@ -101,8 +133,8 @@ class AttributeRouter
                         if ($result instanceof ResponseDto) {
                             return $this->convertToResponse($result, $responseType);
                         }
-                        
-                        return $result;
+
+                        return $this->echoHtml($result);
                     } catch (\Throwable $e) {
                         $errorResponse = new ResponseDto();
                         $errorResponse->code = 500;

@@ -43,6 +43,28 @@ $app = new FrameworkX\App(
     new ErrorHandlerMiddleware()
 );
 
+$app->get('/vendor/{path:.+}', function (Psr\Http\Message\ServerRequestInterface $request) {
+    $path = $request->getAttribute('path');
+    $file = __DIR__ . '/../vendor/' . $path;
+
+    if (!file_exists($file) || !is_file($file)) {
+        return new React\Http\Message\Response(
+            404,
+            ['Content-Type' => 'text/plain'],
+            'File not found'
+        );
+    }
+
+    $mimeType = mime_content_type($file);
+    $body = file_get_contents($file);
+
+    return new React\Http\Message\Response(
+        200,
+        ['Content-Type' => $mimeType],
+        $body
+    );
+});
+
 // Register all controllers using AttributeRouter
 $router = new AttributeRouter($app, $container);
 $router->registerControllersFromDirectory(__DIR__ . '/../src/Domain');

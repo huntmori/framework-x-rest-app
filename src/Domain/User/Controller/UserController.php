@@ -11,6 +11,7 @@ use Damoyo\Api\Domain\User\Dto\UserCreate\UserCreateRequest;
 use Damoyo\Api\Domain\User\Dto\UserUpdate\UserUpdateRequest;
 use Damoyo\Api\Domain\User\Mapper\UserMapper;
 use Damoyo\Api\Domain\User\Service\UserService;
+use DebugBar\DebugBar;
 use Exception;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -36,7 +37,24 @@ class UserController
         responseType: 'application/json'
     )]
     public function listUsers(ServerRequestInterface $request): ResponseDto 
-    {    
+    {
+        $users = $this->userService->listUsers();
+        return ResponseDto::init()
+            ->code(200)
+            ->result(true)
+            ->message('사용자 목록 조회 성공')
+            ->data($users);
+    }
+
+    #[Route(
+        path: '/api/debug',
+        method: HttpMethod::GET,
+        responseType: 'application/json'
+    )]
+    public function debug(ServerRequestInterface $request): ResponseDto
+    {
+        $debug = new DebugBar();
+        $debug->sendDataInHeaders(true);
         $users = $this->userService->listUsers();
         return ResponseDto::init()
             ->code(200)

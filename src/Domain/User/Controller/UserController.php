@@ -63,11 +63,7 @@ class UserController
             ->data($users);
     }
 
-    #[Route(
-        path: '/api/user',
-        method: HttpMethod::POST,
-        responseType: 'application/json'
-    )]
+    #[Route(path: '/api/user', method: HttpMethod::POST, responseType: 'application/json')]
     public function createUser(
         #[RequestMapper(UserMapper::class, 'toUserCreateRequest')]
         UserCreateRequest $userRequest

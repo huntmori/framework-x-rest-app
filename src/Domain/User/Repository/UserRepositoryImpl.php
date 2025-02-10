@@ -66,8 +66,8 @@ class UserRepositoryImpl implements UserRepository
                 [ 'id' => $id ]
             );
 
-        $row = $result[0];
-        return $this->mapper->dbRowToUser($row);
+        $row = $result ? $result[0] : null;
+        return $row ? $this->mapper->dbRowToUser($row) : null;
             
     }
 
